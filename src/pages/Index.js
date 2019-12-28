@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-// import Result from "./components/Result";
-// import FormContainer from "./components/FormContainer";
-// import ErrorMessages from "./components/ErrorMessages";
 import styled, {createGlobalStyle} from 'styled-components'
 import 'typeface-montserrat'
 import Header from "../components/Header";
-import tiki from "../assets/tiki.png";
-import pos from "../assets/pos.png";
-import jne from "../assets/jne.png";
+import Main from "../components/Main";
 
 const GlobalStyle = createGlobalStyle`
-
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     line-height: 1.5;
   }
-
 `
 
+const Container = styled.div`
+  background: #FBF9F9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`
 
 const Index = () => {
   const [courier, setCourier] = useState("");
@@ -46,10 +45,13 @@ const Index = () => {
   };
 
   return (
-    <div className="container">
-      <GlobalStyle />
+    <>
+    <GlobalStyle />
+    <Container>
       <Header />
-    </div>
+      <Main />
+    </Container>
+    </>
   )
     /*
       <CssBaseline />
