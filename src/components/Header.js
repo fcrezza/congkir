@@ -7,7 +7,7 @@ import github from "../assets/github.svg";
 const StyledHeader = styled.header`
   background: #DE6B95;
   color: #f1eeee
-  padding: 10px 6rem;
+  padding: 10px 8rem;
   display: flex;
   justify-content: center;
   align-items: center;

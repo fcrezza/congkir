@@ -1,55 +1,103 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import Form from "./Form";
 import hero from "../assets/hero.svg";
 
 const StyledMain = styled.main`
   flex: 1;
   display: flex;
-  padding: 2rem 6rem;
+  padding: 2.5rem 8rem;
 
   .left-panel {
-    width: 100%;
-    max-width: 650px;
+    width: 55%;
     display: flex;
     flex-direction: column;
   }
 
   .title {
-    margin: 0 0 10px 0;
+    margin: 0 0 1rem 0;
     color: #444;
     font-weight: 700;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
   }
 
   .subtitle {
     color: #555;
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .hero {
     margin-top: 2rem;
-    background: url(${hero}) no-repeat center;
+    background: url(${hero}) no-repeat left bottom;
     background-size: contain;
     flex: 1;
     width: 100%;
   }
 
   .right-panel {
-    width: 100%;
-    border: 1 dotted;
+    width: 40%;
+    margin-left: 5%;
   }
 
   .message {
     color: #de6b95;
     text-align: center;
-    font-fize: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1.5rem 0;
   }
 `;
 
+const getData = url => {
+  return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
+    headers: {
+      key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
+    }
+  });
+};
+
 const Main = () => {
+  const provinces = JSON.parse(localStorage.getItem("provinces"));
+  let cities = JSON.parse(localStorage.getItem("cities"));
+
+  useEffect(() => {
+    if (!cities) {
+      const getProvinces = getData(
+        "https://api.rajaongkir.com/starter/province"
+      );
+      const getCities = getData("https://api.rajaongkir.com/starter/city");
+
+      axios
+        .all([getProvinces, getCities])
+        .then(
+          axios.spread((resProv, resCities) => {
+            let finalCities = [];
+            resProv.data.rajaongkir.results.forEach(province => {
+              const filterCities = resCities.data.rajaongkir.results
+                .filter(city => city.province_id === province.province_id)
+                .map(city => ({
+                  id: city.city_id,
+                  value: `${city.city_name}, ${province.province}`,
+                  label: `${city.city_name}, ${province.province}`
+                }));
+              finalCities = [...finalCities, ...filterCities];
+            });
+            cities = finalCities;
+            localStorage.setItem("cities", JSON.stringify(cities));
+          })
+        )
+        .catch(
+          err => console.log(err)
+          //   // handleError({
+          //   //   error: true,
+          //   //   type: "network error"
+          //   // })
+        );
+    }
+  }, []);
+
   return (
     <StyledMain>
       <div className="left-panel">
@@ -62,6 +110,7 @@ const Main = () => {
       </div>
       <div className="right-panel">
         <h2 className="message">Coba sekarang!</h2>
+        <Form cities={cities} />
       </div>
     </StyledMain>
   );
