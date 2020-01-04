@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import Form from "./Form";
 import hero from "../assets/hero.svg";
+import Modal from './Modal'
+import Result from './Result'
 
 const StyledMain = styled.main`
   flex: 1;
@@ -50,53 +51,12 @@ const StyledMain = styled.main`
   }
 `;
 
-const getData = url => {
-  return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
-    headers: {
-      key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
-    }
-  });
-};
-
 const Main = () => {
-  const provinces = JSON.parse(localStorage.getItem("provinces"));
-  let cities = JSON.parse(localStorage.getItem("cities"));
-
-  useEffect(() => {
-    if (!cities) {
-      const getProvinces = getData(
-        "https://api.rajaongkir.com/starter/province"
-      );
-      const getCities = getData("https://api.rajaongkir.com/starter/city");
-
-      axios
-        .all([getProvinces, getCities])
-        .then(
-          axios.spread((resProv, resCities) => {
-            let finalCities = [];
-            resProv.data.rajaongkir.results.forEach(province => {
-              const filterCities = resCities.data.rajaongkir.results
-                .filter(city => city.province_id === province.province_id)
-                .map(city => ({
-                  id: city.city_id,
-                  value: `${city.city_name}, ${province.province}`,
-                  label: `${city.city_name}, ${province.province}`
-                }));
-              finalCities = [...finalCities, ...filterCities];
-            });
-            cities = finalCities;
-            localStorage.setItem("cities", JSON.stringify(cities));
-          })
-        )
-        .catch(
-          err => console.log(err)
-          //   // handleError({
-          //   //   error: true,
-          //   //   type: "network error"
-          //   // })
-        );
-    }
-  }, []);
+  const [result, setResult] = useState(null)
+  
+  const handleResult = (data) => {
+    setResult(data)
+  }
 
   return (
     <StyledMain>
@@ -110,8 +70,9 @@ const Main = () => {
       </div>
       <div className="right-panel">
         <h2 className="message">Coba sekarang!</h2>
-        <Form cities={cities} />
+        <Form handleResult={handleResult} />
       </div>
+      {result && <Modal>{<Result result={result} />}</Modal>}
     </StyledMain>
   );
 };

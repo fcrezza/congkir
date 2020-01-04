@@ -31,7 +31,7 @@ const CustomSelect = props => {
 
 	const handleInputChange = text => setInputValue(text.trim());
 	const handleChange = option => form.setFieldValue(field.name, option);
-	const suggestions = options.filter(city => {
+	const suggestions = options && options.filter(city => {
 		return city.value.slice(0, inputValue.length).toLowerCase() === inputValue;
 	});
 	const value =
@@ -45,7 +45,6 @@ const CustomSelect = props => {
 			styles={customStyles}
 			isClearable
 			isSearchable
-			blurInputOnSelect
 			menuIsOpen={inputValue.length > 0}
 			onInputChange={handleInputChange}
 			{...field}

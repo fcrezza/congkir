@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styled from "styled-components";
 import axios from "axios";
@@ -92,9 +92,61 @@ const StyledForm = styled.div`
 	.submit-btn:hover, .submit-btn:focus {
 		background: #C85880;
 	}
+
+	.submit-btn:disabled {
+		opacity: .7;
+		cursor: default;
+	}
 `;
 
-const MyForm = ({ cities }) => {
+const getData = url => {
+  return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
+    headers: {
+      key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
+    }
+  });
+};
+
+const MyForm = ({ handleResult }) => {
+	const provinces = JSON.parse(localStorage.getItem("provinces"));
+	let cities = JSON.parse(localStorage.getItem("cities"));
+
+	useEffect(() => {
+		if (!cities) {
+			const getProvinces = getData(
+				"https://api.rajaongkir.com/starter/province"
+			);
+			const getCities = getData("https://api.rajaongkir.com/starter/city");
+
+			axios
+				.all([getProvinces, getCities])
+				.then(
+					axios.spread((resProv, resCities) => {
+						let finalCities = [];
+						resProv.data.rajaongkir.results.forEach(province => {
+							const filterCities = resCities.data.rajaongkir.results
+								.filter(city => city.province_id === province.province_id)
+								.map(city => ({
+									id: city.city_id,
+									value: `${city.city_name}, ${province.province}`,
+									label: `${city.city_name}, ${province.province}`
+								}));
+							finalCities = [...finalCities, ...filterCities];
+						});
+						cities = finalCities;
+						localStorage.setItem("cities", JSON.stringify(cities));
+					})
+				)
+				.catch(
+					err => console.log(err)
+					//   // handleError({
+					//   //   error: true,
+					//   //   type: "network error"
+					//   // })
+				);
+		}
+	}, []);
+
 	return (
 		<Formik
 			initialValues={{
@@ -103,7 +155,7 @@ const MyForm = ({ cities }) => {
 				cityDestination: null,
 				weight: ""
 			}}
-			validationSchema={yup.object().shape({
+			validationSchema={yup.object({
 				service: yup.string().required("Pilih salah satu service!"),
 				cityOrigin: yup
 					.object()
@@ -120,7 +172,9 @@ const MyForm = ({ cities }) => {
 					.integer("Berat harus angka integer!")
 			})}
 			onSubmit={(values, actions) => {
+				console.log(actions);
 				const { service, cityOrigin, cityDestination, weight } = values;
+				actions.setSubmitting(true);
 				// handleError({
 				// 	error: false,
 				// 	type: ""
@@ -145,8 +199,8 @@ const MyForm = ({ cities }) => {
 					)
 					.then(res => {
 						console.log(res.data);
-						// handleLoading();
-						// handleResult(res.data);
+						actions.setSubmitting(false);
+						handleResult(res.data.rajaongkir);
 					});
 				// .catch(err => {
 				// 	// handleLoading(true);
@@ -157,7 +211,7 @@ const MyForm = ({ cities }) => {
 				// });
 			}}
 		>
-			{({ values }) => {
+			{formik => {
 				return (
 					<StyledForm>
 						<Form>
@@ -174,9 +228,7 @@ const MyForm = ({ cities }) => {
 										<img src={tiki} alt="tiki" />
 									</CustomRadio>
 								</div>
-								<ErrorMessage name="service">
-									{msg => <CustomErrorMessage msg={msg} />}
-								</ErrorMessage>
+								<ErrorMessage component={CustomErrorMessage} name="service" />
 							</div>
 
 							<div className="row">
@@ -197,9 +249,10 @@ const MyForm = ({ cities }) => {
 										)}
 									</Field>
 								</div>
-								<ErrorMessage name="cityOrigin">
-									{msg => <CustomErrorMessage msg={msg} />}
-								</ErrorMessage>
+								<ErrorMessage
+									component={CustomErrorMessage}
+									name="cityOrigin"
+								/>
 							</div>
 
 							<div className="row">
@@ -220,9 +273,10 @@ const MyForm = ({ cities }) => {
 										)}
 									</Field>
 								</div>
-								<ErrorMessage name="cityDestination">
-									{msg => <CustomErrorMessage msg={msg} />}
-								</ErrorMessage>
+								<ErrorMessage
+									component={CustomErrorMessage}
+									name="cityDestination"
+								/>
 							</div>
 
 							<div className="row">
@@ -239,13 +293,15 @@ const MyForm = ({ cities }) => {
 									/>
 									<div>gr</div>
 								</div>
-								<ErrorMessage name="weight">
-									{msg => <CustomErrorMessage msg={msg} />}
-								</ErrorMessage>
+								<ErrorMessage component={CustomErrorMessage} name="weight" />
 							</div>
 
-							<button type="submit" className="submit-btn">
-								CEK
+							<button
+								type="submit"
+								className="submit-btn"
+								disabled={formik.isSubmitting}
+							>
+								{formik.isSubmitting ? "Mengecek..." : "CEK"}
 							</button>
 						</Form>
 					</StyledForm>
