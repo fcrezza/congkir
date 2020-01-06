@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ModalWrapper from "./ModalWrapper";
 import Button from "./Button";
 
 const StyledResult = styled.div`
@@ -87,94 +86,90 @@ const Result = ({ result }) => {
 	};
 
 	return (
-		<ModalWrapper>
-			<StyledResult>
-				<h1 className="title">
-					<span>Hasil</span>
-				</h1>
-				<div className="result-container">
-					<div className="result-value">
-						<div className="left">
-							<h3>Service:</h3>
-						</div>
-						<div className="right">
-							<span className="value">{results[0].name}</span>
-						</div>
+		<StyledResult>
+			<h1 className="title">
+				<span>Hasil</span>
+			</h1>
+			<div className="result-container">
+				<div className="result-value">
+					<div className="left">
+						<h3>Service:</h3>
 					</div>
-					<div className="result-value">
-						<div className="left">
-							<h3>Asal:</h3>
-						</div>
-						<div className="right">
-							<span className="value">{`${origin_details.city_name}, ${origin_details.province}`}</span>
-						</div>
-					</div>
-					<div className="result-value">
-						<div className="left">
-							<h3>Tujuan:</h3>
-						</div>
-						<div className="right">
-							<span className="value">{`${destination_details.city_name}, ${origin_details.province}`}</span>
-						</div>
-					</div>
-					<div className="result-value">
-						<div className="left">
-							<h3>Berat barang:</h3>
-						</div>
-						<div className="right">
-							<span className="value">{query.weight} Gram</span>
-						</div>
-					</div>
-					<div className="result-value">
-						<h3>Jenis ekspedisi:</h3>
-					</div>
-					<div>
-						<div className="btn-group">
-							{results[0].costs.map(x => (
-								<Button
-									key={x.service}
-									active={active === x.service}
-									handleClick={handleClick}
-									dataId={x.service}
-								>
-									{x.service}
-								</Button>
-							))}
-						</div>
-						{ekspedisiFilter.length > 0 && (
-							<div className="ekspedisi-container">
-								<div className="ekspedisi-result">
-									<div className="ekspedisi-left">
-										<span>Ekspedisi:</span>
-									</div>
-									<div className="ekspedisi-right">
-										<span className="evalue">{ekspedisiFilter[0].service}</span>
-									</div>
-								</div>
-								<div className="ekspedisi-result">
-									<div className="ekspedisi-left">
-										<span>Harga:</span>
-									</div>
-									<div className="ekspedisi-right">
-										<span className="evalue">
-											Rp. {ekspedisiFilter[0].price}
-										</span>
-									</div>
-								</div>
-								<div className="ekspedisi-result">
-									<div className="ekspedisi-left">
-										<span>Estimasi:</span>
-									</div>
-									<div className="ekspedisi-right">
-										<span className="evalue">{ekspedisiFilter[0].etd}</span>
-									</div>
-								</div>
-							</div>
-						)}
+					<div className="right">
+						<span className="value">{results[0].name}</span>
 					</div>
 				</div>
-			</StyledResult>
-		</ModalWrapper>
+				<div className="result-value">
+					<div className="left">
+						<h3>Asal:</h3>
+					</div>
+					<div className="right">
+						<span className="value">{`${origin_details.city_name}, ${origin_details.province}`}</span>
+					</div>
+				</div>
+				<div className="result-value">
+					<div className="left">
+						<h3>Tujuan:</h3>
+					</div>
+					<div className="right">
+						<span className="value">{`${destination_details.city_name}, ${origin_details.province}`}</span>
+					</div>
+				</div>
+				<div className="result-value">
+					<div className="left">
+						<h3>Berat barang:</h3>
+					</div>
+					<div className="right">
+						<span className="value">{query.weight} Gram</span>
+					</div>
+				</div>
+				<div className="result-value">
+					<h3>Jenis ekspedisi:</h3>
+				</div>
+				<div>
+					<div className="btn-group">
+						{results[0].costs.map(x => (
+							<Button
+								key={x.service}
+								active={active === x.service}
+								handleClick={handleClick}
+								dataId={x.service}
+							>
+								{x.service}
+							</Button>
+						))}
+					</div>
+					{ekspedisiFilter.length > 0 && (
+						<div className="ekspedisi-container">
+							<div className="ekspedisi-result">
+								<div className="ekspedisi-left">
+									<span>Ekspedisi:</span>
+								</div>
+								<div className="ekspedisi-right">
+									<span className="evalue">{ekspedisiFilter[0].service}</span>
+								</div>
+							</div>
+							<div className="ekspedisi-result">
+								<div className="ekspedisi-left">
+									<span>Harga:</span>
+								</div>
+								<div className="ekspedisi-right">
+									<span className="evalue">Rp. {ekspedisiFilter[0].price}</span>
+								</div>
+							</div>
+							<div className="ekspedisi-result">
+								<div className="ekspedisi-left">
+									<span>Estimasi:</span>
+								</div>
+								<div className="ekspedisi-right">
+									<span className="evalue">{ekspedisiFilter[0].etd}</span>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
+		</StyledResult>
 	);
 };
 

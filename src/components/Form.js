@@ -1,8 +1,9 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styled from "styled-components";
 import axios from "axios";
 import * as yup from "yup";
+import PropTypes from "prop-types";
 import CustomErrorMessage from "./CustomErrorMessage";
 import CustomSelect from "./CustomSelect";
 import CustomRadio from "./CustomRadio";
@@ -100,14 +101,19 @@ const StyledForm = styled.div`
 `;
 
 const getData = url => {
-  return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
-    headers: {
-      key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
-    }
-  });
+	return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
+		headers: {
+			key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
+		}
+	});
 };
 
-const MyForm = ({ handleResult }) => {
+const MyForm = props => {
+	const originInput = useRef()
+	const destinationInput = useRef()
+	const weightInput = useRef()
+
+	const{ handleResult, handleToggle, handleError } = props
 	const provinces = JSON.parse(localStorage.getItem("provinces"));
 	let cities = JSON.parse(localStorage.getItem("cities"));
 
@@ -137,13 +143,10 @@ const MyForm = ({ handleResult }) => {
 						localStorage.setItem("cities", JSON.stringify(cities));
 					})
 				)
-				.catch(
-					err => console.log(err)
-					//   // handleError({
-					//   //   error: true,
-					//   //   type: "network error"
-					//   // })
-				);
+				.catch(() => {
+					handleToggle(true);
+					handleError(true);
+				});
 		}
 	}, []);
 
@@ -172,16 +175,11 @@ const MyForm = ({ handleResult }) => {
 					.integer("Berat harus angka integer!")
 			})}
 			onSubmit={(values, actions) => {
-				console.log(actions);
 				const { service, cityOrigin, cityDestination, weight } = values;
 				actions.setSubmitting(true);
-				// handleError({
-				// 	error: false,
-				// 	type: ""
-				// });
-				// handleResult(null);
-				// handleLoading();
-				// resetForm({});
+				originInput.current.blur()
+				destinationInput.current.blur()
+				weightInput.current.blur()
 				axios
 					.post(
 						"https://cors-anywhere.herokuapp.com/https://api.rajaongkir.com/starter/cost",
@@ -198,20 +196,19 @@ const MyForm = ({ handleResult }) => {
 						}
 					)
 					.then(res => {
-						console.log(res.data);
 						actions.setSubmitting(false);
+						actions.resetForm();
 						handleResult(res.data.rajaongkir);
+						handleToggle(true);
+					})
+					.catch(() => {
+						actions.setSubmitting(false);
+						handleToggle(true);
+						handleError(true);
 					});
-				// .catch(err => {
-				// 	// handleLoading(true);
-				// 	// handleError({
-				// 	// 	error: true,
-				// 	// 	type: "invalid input"
-				// 	// });
-				// });
 			}}
 		>
-			{formik => {
+			{({ isSubmitting}) => {
 				return (
 					<StyledForm>
 						<Form>
@@ -241,6 +238,7 @@ const MyForm = ({ handleResult }) => {
 											<CustomSelect
 												className="select-input"
 												placeholder="Kota asal"
+												innerRef={originInput}
 												form={form}
 												field={field}
 												options={cities}
@@ -266,6 +264,7 @@ const MyForm = ({ handleResult }) => {
 												className="select-input"
 												placeholder="Kota tujuan"
 												form={form}
+												innerRef={destinationInput}
 												field={field}
 												options={cities}
 												isDisabled={!cities}
@@ -287,6 +286,7 @@ const MyForm = ({ handleResult }) => {
 									<Field
 										id="weight"
 										name="weight"
+										innerRef={weightInput}
 										type="number"
 										className="weight-input"
 										placeholder="Berat barang"
@@ -299,9 +299,9 @@ const MyForm = ({ handleResult }) => {
 							<button
 								type="submit"
 								className="submit-btn"
-								disabled={formik.isSubmitting}
+								disabled={isSubmitting}
 							>
-								{formik.isSubmitting ? "Mengecek..." : "CEK"}
+								{isSubmitting ? "Mengecek..." : "CEK"}
 							</button>
 						</Form>
 					</StyledForm>
@@ -312,3 +312,9 @@ const MyForm = ({ handleResult }) => {
 };
 
 export default MyForm;
+
+MyForm.propTypes = {
+	handleResult: PropTypes.func,
+	handleToggle: PropTypes.func,
+	handleError: PropTypes.func
+};

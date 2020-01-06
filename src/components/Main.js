@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Form from "./Form";
 import hero from "../assets/hero.svg";
-import Modal from './Modal'
-import Result from './Result'
+import Modal from "./Modal";
+import Result from "./Result";
+import CustomError from "./CustomError";
 
 const StyledMain = styled.main`
   flex: 1;
@@ -52,11 +53,21 @@ const StyledMain = styled.main`
 `;
 
 const Main = () => {
-  const [result, setResult] = useState(null)
-  
-  const handleResult = (data) => {
-    setResult(data)
-  }
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleError = value => {
+    setError(value);
+  };
+
+  const handleToggle = value => {
+    setOpen(value);
+  };
+
+  const handleResult = data => {
+    setResult(data);
+  };
 
   return (
     <StyledMain>
@@ -70,9 +81,19 @@ const Main = () => {
       </div>
       <div className="right-panel">
         <h2 className="message">Coba sekarang!</h2>
-        <Form handleResult={handleResult} />
+        <Form
+          handleToggle={handleToggle}
+          handleError={handleError}
+          handleResult={handleResult}
+          result={result}
+        />
       </div>
-      {result && <Modal>{<Result result={result} />}</Modal>}
+      {open ? (
+        <Modal handleToggle={handleToggle} handleResult={handleResult} handleError={handleError}>
+          {result ? <Result result={result} /> : null}
+          {error ? <CustomError /> : null}
+        </Modal>
+      ) : null}
     </StyledMain>
   );
 };
