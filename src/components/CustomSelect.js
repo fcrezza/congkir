@@ -3,6 +3,15 @@ import Select from "react-select";
 import PropTypes from "prop-types";
 
 const customStyles = {
+	singleValue: provided => ({
+		...provided,
+		fontSize: 13
+	}),
+	input: provided => ({
+		...provided,
+		fontSize: 14,
+		color: "#555"
+	}),
 	control: (provided, state) => {
 		const backgroundColor = state.isDisabled ? "#f6f6f6" : "#F1EEEE";
 
@@ -31,9 +40,13 @@ const CustomSelect = props => {
 
 	const handleInputChange = text => setInputValue(text.trim());
 	const handleChange = option => form.setFieldValue(field.name, option);
-	const suggestions = options && options.filter(city => {
-		return city.value.slice(0, inputValue.length).toLowerCase() === inputValue;
-	});
+	const suggestions =
+		options &&
+		options.filter(city => {
+			return (
+				city.value.slice(0, inputValue.length).toLowerCase() === inputValue
+			);
+		});
 	const value =
 		options && field.value
 			? options.find(options => options.value === field.value.value)

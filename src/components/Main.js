@@ -9,7 +9,7 @@ import CustomError from "./CustomError";
 const StyledMain = styled.main`
   flex: 1;
   display: flex;
-  padding: 2.5rem 8rem;
+  padding: 1.5rem 8rem;
 
   .left-panel {
     width: 55%;
@@ -18,20 +18,20 @@ const StyledMain = styled.main`
   }
 
   .title {
-    margin: 0 0 1rem 0;
+    margin: 0 0 .5rem 0;
     color: #444;
     font-weight: 700;
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
 
   .subtitle {
     color: #555;
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1.21rem;
   }
 
   .hero {
-    margin-top: 2rem;
+  	margin-top: 2rem;
     background: url(${hero}) no-repeat left bottom;
     background-size: contain;
     flex: 1;
@@ -46,9 +46,9 @@ const StyledMain = styled.main`
   .message {
     color: #de6b95;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1rem 0;
   }
 `;
 
@@ -72,12 +72,14 @@ const Main = () => {
   return (
     <StyledMain>
       <div className="left-panel">
-        <h1 className="title">Cek ongkos kirim paket</h1>
-        <p className="subtitle">Rencanakan pengiriman paket</p>
-        <p className="subtitle">anda demi orang tersayang</p>
-        <p className="subtitle">lewat layanan pengiriman</p>
-        <p className="subtitle">terbaik dalam negeri.</p>
-        <div className="hero"></div>
+        <div>
+	        <h1 className="title">CEK ONGKOS KIRIM PAKET</h1>
+	        <p className="subtitle">Rencanakan pengiriman paket</p>
+	        <p className="subtitle">anda demi orang tersayang</p>
+	        <p className="subtitle">lewat layanan pengiriman</p>
+	        <p className="subtitle">terbaik dalam negeri.</p>
+        </div>
+	       <div className="hero"></div>
       </div>
       <div className="right-panel">
         <h2 className="message">Coba sekarang!</h2>

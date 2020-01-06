@@ -3,18 +3,22 @@ import styled from "styled-components";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 
-const StyledCustomRadio = styled.label`
+const StyledCustomRadio = styled.label.attrs({tabIndex: 0})`
 	position: relative;
 	display: block;
 	width: 100px;
 	height: 50px;
-	background: #f1eeee;
+	background: ${({active}) => active ? '#dce0ed' : '#f1eeee'};
 	cursor: pointer;
 	border: none;
 	outline: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	&:not(:nth-child(3)) {
+		margin-right: 20px;
+	}
 
 	&:hover,
 	&:focus {
@@ -34,9 +38,8 @@ const StyledCustomRadio = styled.label`
 
 const CustomRadio = ({ children, ...props }) => {
 	const [field] = useField({ ...props, type: "radio" });
-
 	return (
-		<StyledCustomRadio htmlFor={props.id}>
+		<StyledCustomRadio active={field.checked} htmlFor={props.id}>
 			<input type="radio" {...field} {...props} />
 			{children}
 		</StyledCustomRadio>

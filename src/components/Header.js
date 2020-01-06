@@ -6,7 +6,7 @@ import github from "../assets/github.svg";
 
 const StyledHeader = styled.header`
   background: #DE6B95;
-  color: #f1eeee
+  color: #f1eeee;
   padding: 10px 8rem;
   display: flex;
   justify-content: center;
@@ -25,19 +25,21 @@ const StyledHeader = styled.header`
   .brand .title {
     margin: 0;
     margin-left: 10px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .social-media {
     margin-left: auto;
   }
 
-  .social-media-link:nth-child(2) {
-    margin-left: 14px;
+  .social-media-link {
+    display: inline-block;
+    padding: 0 8px;
   }
 
   .social-media-link img {
     width: 20px;    
+    display: block;
   }
 `;
 
@@ -52,7 +54,7 @@ const Header = () => {
         <a href="https://twitter.com/fcrezza" className="social-media-link">
           <img src={twitter} alt="twitter" />
         </a>
-        <a href="" className="social-media-link">
+        <a href="https://github.com/fcrezza/congkir" className="social-media-link">
           <img src={github} alt="project repository" />
         </a>
       </div>

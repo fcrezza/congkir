@@ -12,7 +12,7 @@ const StyledResult = styled.div`
 		left: 0;
 		font-size: 1.5rem;
 		color: #DE6B95;
-		padding-right: 30px
+		padding-right: 30px;
 		border-bottom: 3px solid #DE6B95;
 	}
 
@@ -41,6 +41,10 @@ const StyledResult = styled.div`
 		margin: 0;
 		font-size: 1.1rem;
 		font-weight: 600;
+	}
+
+	.btn-group {
+		display: flex;
 	}
 
 	.ekspedisi-container {

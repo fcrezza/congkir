@@ -8,7 +8,13 @@ const StyledButton = styled.button`
 	cursor: ${props => (props.active ? "default" : "pointer")}
 	border: none;
 	padding: .5rem 1rem;
-	
+	outline: none;
+
+	&:not(:first-child) {
+		border-left: 1px solid #f1eeee;
+	}
+
+
 	&:hover, &:focus {
 		background: ${props => (props.active ? null : "#C85880")}
 	}

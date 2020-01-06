@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState, useEffect, useRef } from "react";
+import { Formik, Form, Field } from "formik";
 import styled from "styled-components";
 import axios from "axios";
 import * as yup from "yup";
@@ -10,23 +10,24 @@ import CustomRadio from "./CustomRadio";
 import jne from "../assets/jne.png";
 import pos from "../assets/pos.png";
 import tiki from "../assets/tiki.png";
+import getOptions from "../helpers/getOptions";
 
 const StyledForm = styled.div`
-	background: #FFFDFD;
+	background: #fffdfd;
 	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 	border-radius: 20px;
 	padding: 1.5rem 2rem;
+	
+	.row:not(:first-child) {
+		margin-top: .5rem;
+	}
 
 	.input-label {
 		font-weight: 600;
-		margin-bottom: 1rem;
+		margin-bottom: .5rem;
 		color: #444;
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 		display: block;
-	}
-
-	.row:not(:first-child) {
-		margin-top: 1.1rem;
 	}
 
 	.radio-group {
@@ -34,32 +35,30 @@ const StyledForm = styled.div`
 		display: flex;
 		justify-content: space-between;
 	}
-	
-	.radio-group label:not(:nth-child(3)) {
-		margin-right: 20px;
-	}
 
-	.select-input:first-child, .select-input:nth-child(3) {
-		margin-bottom: 14px;
-	}
-	
 	.input-wrapper {
 		overflow: hidden;
 		border-radius: 5px;
-		background: #F1EEEE;
+		background: #f1eeee;
 		position: relative;
-		padding: 10px;
-		font-size: 14px; 
+		font-size: 14px;
 		color: #555;
 		padding: 20px;
 	}
 
 	.weight-input {
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+		  -webkit-appearance: none;
+		  margin: 0;
+		}
+	
+	 -moz-appearance:textfield;
 		padding: 5px 10px;
 		background: transparent;
 		border: none;
 		position: absolute;
-		width: 85%;
+		width: 90%;
 		top: 0;
 		color: #555;
 		right: 0;
@@ -72,81 +71,62 @@ const StyledForm = styled.div`
 		display: inline-block;
 		position: absolute;
 		top: 10px;
+		width: 5%;
 		right: 1rem;
+		pointer-events: none;
 	}
 
 	.submit-btn {
-		margin-top: 1.5rem;
-		width: 100%
+		margin-top: .8rem;
+		width: 100%;
 		padding: 10px;
-		font-size: .9rem;
-		background: #DE6B95;
+		font-size: 0.9rem;
+		background: #de6b95;
 		border-radius: 5px;
-		color: #F1EEEE;
+		color: #f1eeee;
 		font-weight: 600;
 		border: none;
 		cursor: pointer;
 		outline: none;
-		transition: background .3s ease;
+		transition: background 0.3s ease;
 	}
 
-	.submit-btn:hover, .submit-btn:focus {
-		background: #C85880;
+	.submit-btn:hover,
+	.submit-btn:focus {
+		background: #c85880;
 	}
 
 	.submit-btn:disabled {
-		opacity: .7;
+		opacity: 0.7;
 		cursor: default;
 	}
 `;
-
-const getData = url => {
-	return axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
-		headers: {
-			key: process.env.REACT_APP_RAJA_ONGKIR_API_KEY
-		}
-	});
-};
+const serviceoptions = [
+	{ id: 1, name: "jne", img: jne },
+	{ id: 2, name: "pos", img: pos },
+	{ id: 3, name: "tiki", img: tiki }
+];
 
 const MyForm = props => {
-	const originInput = useRef()
-	const destinationInput = useRef()
-	const weightInput = useRef()
-
-	const{ handleResult, handleToggle, handleError } = props
-	const provinces = JSON.parse(localStorage.getItem("provinces"));
-	let cities = JSON.parse(localStorage.getItem("cities"));
+	const { handleResult, handleToggle, handleError } = props;
+	const [cities, setCities] = useState(
+		JSON.parse(localStorage.getItem("cities"))
+	);
+	const originInput = useRef();
+	const destinationInput = useRef();
+	const weightInput = useRef();
 
 	useEffect(() => {
 		if (!cities) {
-			const getProvinces = getData(
-				"https://api.rajaongkir.com/starter/province"
-			);
-			const getCities = getData("https://api.rajaongkir.com/starter/city");
-
-			axios
-				.all([getProvinces, getCities])
-				.then(
-					axios.spread((resProv, resCities) => {
-						let finalCities = [];
-						resProv.data.rajaongkir.results.forEach(province => {
-							const filterCities = resCities.data.rajaongkir.results
-								.filter(city => city.province_id === province.province_id)
-								.map(city => ({
-									id: city.city_id,
-									value: `${city.city_name}, ${province.province}`,
-									label: `${city.city_name}, ${province.province}`
-								}));
-							finalCities = [...finalCities, ...filterCities];
-						});
-						cities = finalCities;
-						localStorage.setItem("cities", JSON.stringify(cities));
-					})
-				)
-				.catch(() => {
+			const getCities = getOptions();
+			getCities.then(data => {
+				if (data) {
+					setCities(data);
+				} else {
 					handleToggle(true);
 					handleError(true);
-				});
+				}
+			});
 		}
 	}, []);
 
@@ -177,9 +157,9 @@ const MyForm = props => {
 			onSubmit={(values, actions) => {
 				const { service, cityOrigin, cityDestination, weight } = values;
 				actions.setSubmitting(true);
-				originInput.current.blur()
-				destinationInput.current.blur()
-				weightInput.current.blur()
+				originInput.current.blur();
+				destinationInput.current.blur();
+				weightInput.current.blur();
 				axios
 					.post(
 						"https://cors-anywhere.herokuapp.com/https://api.rajaongkir.com/starter/cost",
@@ -208,74 +188,67 @@ const MyForm = props => {
 					});
 			}}
 		>
-			{({ isSubmitting}) => {
+			{({ isSubmitting }) => {
 				return (
 					<StyledForm>
 						<Form>
 							<div className="row">
 								<label className="input-label">Service</label>
 								<div className="radio-group">
-									<CustomRadio id="jne" name="service" value="jne">
-										<img src={jne} alt="jne" />
-									</CustomRadio>
-									<CustomRadio id="pos" name="service" value="pos">
-										<img src={pos} alt="pos" />
-									</CustomRadio>
-									<CustomRadio id="tiki" name="service" value="tiki">
-										<img src={tiki} alt="tiki" />
-									</CustomRadio>
+									{serviceoptions.map(service => {
+										return (
+											<CustomRadio
+												key={service.id}
+												id={service.name}
+												value={service.name}
+												name="service"
+											>
+												<img src={service.img} alt="service.name" />
+											</CustomRadio>
+										);
+									})}
 								</div>
-								<ErrorMessage component={CustomErrorMessage} name="service" />
+								<CustomErrorMessage name="service" />
 							</div>
 
 							<div className="row">
 								<label className="input-label" htmlFor="cityOrigin">
 									Tempat asal
 								</label>
-								<div className="select-group">
-									<Field name="cityOrigin">
-										{({ form, field }) => (
-											<CustomSelect
-												className="select-input"
-												placeholder="Kota asal"
-												innerRef={originInput}
-												form={form}
-												field={field}
-												options={cities}
-												isDisabled={!cities}
-											/>
-										)}
-									</Field>
-								</div>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="cityOrigin"
-								/>
+								<Field name="cityOrigin">
+									{({ form, field }) => (
+										<CustomSelect
+											className="select-input"
+											placeholder="Kota asal"
+											innerRef={originInput}
+											form={form}
+											field={field}
+											options={cities}
+											isDisabled={!cities}
+										/>
+									)}
+								</Field>
+								<CustomErrorMessage name="cityOrigin" />
 							</div>
 
 							<div className="row">
 								<label className="input-label" htmlFor="cityDestination">
 									Tempat tujuan
 								</label>
-								<div className="select-group">
-									<Field name="cityDestination">
-										{({ form, field }) => (
-											<CustomSelect
-												className="select-input"
-												placeholder="Kota tujuan"
-												form={form}
-												innerRef={destinationInput}
-												field={field}
-												options={cities}
-												isDisabled={!cities}
-											/>
-										)}
-									</Field>
-								</div>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="cityDestination"
-								/>
+								<Field name="cityDestination">
+									{({ form, field }) => (
+										<CustomSelect
+											className="select-input"
+											placeholder="Kota tujuan"
+											form={form}
+											innerRef={destinationInput}
+											field={field}
+											options={cities}
+											isDisabled={!cities}
+										/>
+									)}
+								</Field>
+								<CustomErrorMessage name="cityDestination" />
 							</div>
 
 							<div className="row">
@@ -293,7 +266,7 @@ const MyForm = props => {
 									/>
 									<div>gr</div>
 								</div>
-								<ErrorMessage component={CustomErrorMessage} name="weight" />
+								<CustomErrorMessage name="weight" />
 							</div>
 
 							<button
