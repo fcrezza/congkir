@@ -50,7 +50,6 @@ const StyledForm = styled.div`
 		border-radius: 5px;
 		background: #f1eeee;
 		position: relative;
-		font-size: 14px;
 		color: #555;
 		padding: 20px;
 	}
@@ -61,7 +60,7 @@ const StyledForm = styled.div`
 			-webkit-appearance: none;
 			margin: 0;
 		}
-
+		font-size: .8rem;
 		-moz-appearance: textfield;
 		padding: 5px 10px;
 		background: transparent;
@@ -80,6 +79,7 @@ const StyledForm = styled.div`
 		display: inline-block;
 		position: absolute;
 		top: 10px;
+		font-size: .8rem;
 		width: 5%;
 		right: 1rem;
 		pointer-events: none;

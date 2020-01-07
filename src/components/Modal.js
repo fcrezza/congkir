@@ -24,7 +24,8 @@ const StyledModal = styled.div`
 		border-radius: 20px;
 
 		@media screen and (max-width: 480px) {
-			padding: 1.3rem .9rem;
+			padding: 1.3rem 1.5rem;
+			border-radius: 0;
 		}
 	}
 
@@ -36,11 +37,19 @@ const StyledModal = styled.div`
 		background: transparent;
 		cursor: pointer;
 		outline: none;
+		
+		@media screen and (max-width: 480px) {
+			top: 17px;
+			right: 10px;
+		}
 	}
 
 	.close-btn img {
 		width: 85%;
 		display: block;
+		@media screen and (max-width: 480px) {
+			width: 70%;
+		}
 	}
 `;
 

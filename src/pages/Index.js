@@ -22,24 +22,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-
-  @media screen and (max-width: 480px) {
-    height: 100%;
-  }
-`;
-
 const Index = () => {
   return (
     <>
       <GlobalStyle />
-      <Container>
+      <div>
         <Header />
         <Main />
-      </Container>
+      </div>
     </>
   );
 };

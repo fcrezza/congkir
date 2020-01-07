@@ -7,7 +7,7 @@ import github from "../assets/github.svg";
 const StyledHeader = styled.header`
   background: #de6b95;
   color: #f1eeee;
-  padding: 12px 8rem;
+  padding: 12px 7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,6 +18,10 @@ const StyledHeader = styled.header`
 
   @media screen and (max-width: 768px) {
     padding: 12px 2rem;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 12px 1.5rem;
   }
 
   .brand {

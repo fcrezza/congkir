@@ -16,25 +16,18 @@ const StyledResult = styled.div`
 		border-bottom: 3px solid #DE6B95;
 	}
 
-	.result-container {
-		margin-left: 14px;
-	}
-
 	.result-value {
 		color: #333;
+		display: flex;
 		margin-bottom: 1rem;
-	}
 
-	.left, .right {
-		display: inline-block;
+		@media screen and (max-width: 480px) {
+			flex-direction: column;
+		}
 	}
 
 	.left {
-		width: 35%;
-	}
-
-	.right {
-		width: 65%;
+		min-width: 180px;
 	}
 
 	.result-value h3 {
@@ -44,6 +37,7 @@ const StyledResult = styled.div`
 	}
 
 	.btn-group {
+		overflow: auto;
 		display: flex;
 	}
 
@@ -51,23 +45,21 @@ const StyledResult = styled.div`
 		background: #F4F2F2;
 		padding: 1rem;
 	}
+	
+	.ekspedisi-result {
+		display: flex;
+		@media screen and (max-width: 480px) {
+			flex-direction: column;
+		}
+	}
 
 	.ekspedisi-result:not(:last-child) {
 		margin-bottom: .8rem;
 	}
 
-	.ekspedisi-left, .ekspedisi-right {
-		display: inline-block;
-	}
-
 	.ekspedisi-left {
-		width: 20%;
+		min-width: 100px;
 		font-weight: 600;
-	}
-
-	.ekspedisi-right {
-		width: 65%;
-		margin-left: 1.5rem;
 	}
 `;
 
@@ -95,7 +87,7 @@ const Result = ({ result }) => {
 			<h1 className="title">
 				<span>Hasil</span>
 			</h1>
-			<div className="result-container">
+			<div>
 				<div className="result-value">
 					<div className="left">
 						<h3>Service:</h3>

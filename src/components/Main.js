@@ -7,32 +7,29 @@ import Result from "./Result";
 import CustomError from "./CustomError";
 
 const StyledMain = styled.main`
-  flex: 1;
   display: flex;
-  padding: 2.5rem 8rem;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
-    padding: 2.5rem 4rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    padding: 2.5rem 2rem;
   }
 
   .left-panel {
-    width: 60%;
+    padding: 2.5rem 0 0 7rem;
     display: flex;
     flex-direction: column;
 
     @media screen and (max-width: 1024px) {
       flex-direction: row;
-      width: 100%;
+      padding: 2.5rem 4rem 0 4rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 2rem 2rem 0 2rem;
     }
 
     @media screen and (max-width: 480px) {
       text-align: center;
+      padding: 2rem 1.5rem 0 1.5rem;
     }
   }
 
@@ -40,10 +37,14 @@ const StyledMain = styled.main`
     margin: 0 0 1rem 0;
     color: #444;
     font-weight: 700;
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
 
   .subtitle {
+    max-width: 330px;
+  }
+
+  .subtitle p {
     color: #555;
     margin: 0;
     font-size: 1.3rem;
@@ -53,8 +54,8 @@ const StyledMain = styled.main`
     margin: 2rem 0;
     background: url(${hero}) no-repeat left bottom;
     background-size: contain;
-    flex: 1;
-    width: 100%;
+    width: 600px;
+    height: 450px;
 
     @media screen and (max-width: 1024px) {
       margin: 0 0 0 2rem;
@@ -68,16 +69,20 @@ const StyledMain = styled.main`
   }
 
   .right-panel {
-    width: 35%;
-    margin-left: 5%;
+    padding: 2.5rem 7rem 0 0;
+    margin-left: auto;
 
     @media screen and (max-width: 1024px) {
-      width: 100%;
-      margin: 4rem 0 0 0;
+      padding: 3rem 4rem 0 4rem;
+      margin-left: 0;
     }
+
     @media screen and (max-width: 768px) {
-      width: 100%;
-      margin: 2.5rem 0 0 0;
+      padding: 2.5rem 2rem 0 2rem;
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 2.5rem 0 0 0;
     }
   }
 
@@ -86,11 +91,15 @@ const StyledMain = styled.main`
     text-align: center;
     font-size: 1.5rem;
     font-weight: 600;
-    margin: 0 0 1.3rem 0;
+    margin: 0 0 1.5rem 0;
 
     @media screen and (max-width: 1024px) {
       text-align: left;
       margin: 0 0 2rem 0;
+    }
+
+    @media screen and (max-width: 480px) {
+      margin: 0 0 2rem 1.5rem;
     }
   }
 `;
@@ -117,10 +126,12 @@ const Main = () => {
       <div className="left-panel">
         <div>
           <h1 className="title">CEK ONGKOS KIRIM PAKET</h1>
-          <p className="subtitle">Rencanakan pengiriman paket</p>
-          <p className="subtitle">anda demi orang tersayang</p>
-          <p className="subtitle">lewat layanan pengiriman</p>
-          <p className="subtitle">terbaik dalam negeri.</p>
+          <div className="subtitle">
+            <p>
+              Rencanakan pengiriman paket anda demi orang tersayang lewat
+              layanan pengiriman terbaik dalam negeri.
+            </p>
+          </div>
         </div>
         <div className="hero"></div>
       </div>
