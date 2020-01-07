@@ -36,7 +36,7 @@ const customStyles = {
 
 const CustomSelect = props => {
 	const [inputValue, setInputValue] = useState("");
-	const { form, field, options, innerRef } = props;
+	const { form, field, options } = props;
 
 	const handleInputChange = text => setInputValue(text.trim());
 	const handleChange = option => form.setFieldValue(field.name, option);
@@ -54,7 +54,6 @@ const CustomSelect = props => {
 
 	return (
 		<Select
-			ref={innerRef}
 			inputId={field.name}
 			styles={customStyles}
 			isClearable
@@ -78,6 +77,5 @@ CustomSelect.propTypes = {
 	form: PropTypes.object,
 	field: PropTypes.object,
 	options: PropTypes.array.isRequired,
-	isDisabled: PropTypes.bool,
-	innerRef: PropTypes.object
+	isDisabled: PropTypes.bool
 };

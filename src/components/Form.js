@@ -121,9 +121,6 @@ const MyForm = props => {
 	const [cities, setCities] = useState(
 		JSON.parse(localStorage.getItem("cities"))
 	);
-	const originInput = useRef();
-	const destinationInput = useRef();
-	const weightInput = useRef();
 
 	useEffect(() => {
 		if (!cities) {
@@ -163,12 +160,11 @@ const MyForm = props => {
 					.positive("Berat memakai angka positif!")
 					.integer("Berat harus angka integer!")
 			})}
+			validateOnBlur={false}
+			validateOnChange={false}
 			onSubmit={(values, actions) => {
 				const { service, cityOrigin, cityDestination, weight } = values;
 				actions.setSubmitting(true);
-				originInput.current.blur();
-				destinationInput.current.blur();
-				weightInput.current.blur();
 				axios
 					.post(
 						"https://cors-anywhere.herokuapp.com/https://api.rajaongkir.com/starter/cost",
@@ -229,7 +225,6 @@ const MyForm = props => {
 										<CustomSelect
 											className="select-input"
 											placeholder="Kota asal"
-											innerRef={originInput}
 											form={form}
 											field={field}
 											options={cities}
@@ -250,7 +245,6 @@ const MyForm = props => {
 											className="select-input"
 											placeholder="Kota tujuan"
 											form={form}
-											innerRef={destinationInput}
 											field={field}
 											options={cities}
 											isDisabled={!cities}
@@ -268,7 +262,6 @@ const MyForm = props => {
 									<Field
 										id="weight"
 										name="weight"
-										innerRef={weightInput}
 										type="number"
 										className="weight-input"
 										placeholder="Berat barang"
