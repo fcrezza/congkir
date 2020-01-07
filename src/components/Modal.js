@@ -22,6 +22,10 @@ const StyledModal = styled.div`
 		background: #fffdfd;
 		padding: 1.5rem 2rem;
 		border-radius: 20px;
+
+		@media screen and (max-width: 480px) {
+			padding: 1.3rem .9rem;
+		}
 	}
 
 	.close-btn {
