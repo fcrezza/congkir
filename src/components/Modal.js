@@ -13,6 +13,7 @@ const StyledModal = styled.div`
 	background: rgba(0, 0, 0, 0.3);
 
 	.content {
+		overflow-y: auto;
 		position: absolute;
 		top: 50%;
 		left: 50%;

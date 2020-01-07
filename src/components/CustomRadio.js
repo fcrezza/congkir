@@ -40,7 +40,7 @@ const CustomRadio = ({ children, ...props }) => {
 	const [field] = useField({ ...props, type: "radio" });
 	return (
 		<StyledCustomRadio active={field.checked} htmlFor={props.id}>
-			<input type="radio" {...field} {...props} />
+			<input tabIndex={-1} type="radio" {...field} {...props} />
 			{children}
 		</StyledCustomRadio>
 	);

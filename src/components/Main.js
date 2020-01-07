@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Form from "./Form";
 import hero from "../assets/hero.svg";
-import Modal from "./Modal";
-import Result from "./Result";
-import CustomError from "./CustomError";
 
 const StyledMain = styled.main`
   display: flex;
@@ -28,7 +26,6 @@ const StyledMain = styled.main`
     }
 
     @media screen and (max-width: 480px) {
-      text-align: center;
       padding: 2rem 1.5rem 0 1.5rem;
     }
   }
@@ -104,58 +101,31 @@ const StyledMain = styled.main`
   }
 `;
 
-const Main = () => {
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const handleError = value => {
-    setError(value);
-  };
-
-  const handleToggle = value => {
-    setOpen(value);
-  };
-
-  const handleResult = data => {
-    setResult(data);
-  };
-
-  return (
-    <StyledMain>
-      <div className="left-panel">
-        <div>
-          <h1 className="title">CEK ONGKOS KIRIM PAKET</h1>
-          <div className="subtitle">
-            <p>
-              Rencanakan pengiriman paket anda demi orang tersayang lewat
-              layanan pengiriman terbaik dalam negeri.
-            </p>
-          </div>
+const Main = props => (
+  <StyledMain>
+    <div className="left-panel">
+      <div>
+        <h1 className="title">CEK ONGKOS KIRIM PAKET</h1>
+        <div className="subtitle">
+          <p>
+            Rencanakan pengiriman paket anda demi orang tersayang lewat layanan
+            pengiriman terbaik dalam negeri.
+          </p>
         </div>
-        <div className="hero"></div>
       </div>
-      <div className="right-panel">
-        <h2 className="message">Coba sekarang!</h2>
-        <Form
-          handleToggle={handleToggle}
-          handleError={handleError}
-          handleResult={handleResult}
-          result={result}
-        />
-      </div>
-      {open ? (
-        <Modal
-          handleToggle={handleToggle}
-          handleResult={handleResult}
-          handleError={handleError}
-        >
-          {result ? <Result result={result} /> : null}
-          {error ? <CustomError /> : null}
-        </Modal>
-      ) : null}
-    </StyledMain>
-  );
-};
+      <div className="hero"></div>
+    </div>
+    <div className="right-panel">
+      <h2 className="message">Coba sekarang!</h2>
+      <Form {...props} />
+    </div>
+  </StyledMain>
+);
 
 export default Main;
+
+Main.propTypes = {
+  handleError: PropTypes.func,
+  handleToggle: PropTypes.func,
+  handleResult: PropTypes.func
+};
