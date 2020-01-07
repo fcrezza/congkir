@@ -65,8 +65,9 @@ const StyledResult = styled.div`
 		font-weight: 600;
 	}
 
-	.ekspedisi.right {
-		width: 80%
+	.ekspedisi-right {
+		width: 65%;
+		margin-left: 1.5rem;
 	}
 `;
 

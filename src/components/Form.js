@@ -17,14 +17,19 @@ const StyledForm = styled.div`
 	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 	border-radius: 20px;
 	padding: 1.5rem 2rem;
-	
+
+	@media screen and (max-width: 768px) {
+		box-shadow: none;
+		border-radius: 0;
+	}
+
 	.row:not(:first-child) {
-		margin-top: .5rem;
+		margin-top: 0.5rem;
 	}
 
 	.input-label {
 		font-weight: 600;
-		margin-bottom: .5rem;
+		margin-bottom: 0.5rem;
 		color: #444;
 		font-size: 1.1rem;
 		display: block;
@@ -34,6 +39,10 @@ const StyledForm = styled.div`
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
+
+		@media screen and (max-width: 1024px) {
+			justify-content: flex-start;
+		}
 	}
 
 	.input-wrapper {
@@ -49,11 +58,11 @@ const StyledForm = styled.div`
 	.weight-input {
 		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button {
-		  -webkit-appearance: none;
-		  margin: 0;
+			-webkit-appearance: none;
+			margin: 0;
 		}
-	
-	 -moz-appearance:textfield;
+
+		-moz-appearance: textfield;
 		padding: 5px 10px;
 		background: transparent;
 		border: none;
@@ -77,7 +86,7 @@ const StyledForm = styled.div`
 	}
 
 	.submit-btn {
-		margin-top: .8rem;
+		margin-top: 0.8rem;
 		width: 100%;
 		padding: 10px;
 		font-size: 0.9rem;

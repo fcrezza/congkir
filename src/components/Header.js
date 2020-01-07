@@ -5,17 +5,29 @@ import twitter from "../assets/twitter.svg";
 import github from "../assets/github.svg";
 
 const StyledHeader = styled.header`
-  background: #DE6B95;
+  background: #de6b95;
   color: #f1eeee;
-  padding: 10px 8rem;
+  padding: 12px 8rem;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    padding: 12px 4rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 12px 2rem;
+  }
 
   .brand {
     display: flex;
     align-items: center;
     margin-left: auto;
+
+    @media screen and (max-width: 768px) {
+      margin-left: 0;
+    }
   }
 
   .brand img {
@@ -38,7 +50,7 @@ const StyledHeader = styled.header`
   }
 
   .social-media-link img {
-    width: 20px;    
+    width: 20px;
     display: block;
   }
 `;
@@ -54,7 +66,10 @@ const Header = () => {
         <a href="https://twitter.com/fcrezza" className="social-media-link">
           <img src={twitter} alt="twitter" />
         </a>
-        <a href="https://github.com/fcrezza/congkir" className="social-media-link">
+        <a
+          href="https://github.com/fcrezza/congkir"
+          className="social-media-link"
+        >
           <img src={github} alt="project repository" />
         </a>
       </div>
