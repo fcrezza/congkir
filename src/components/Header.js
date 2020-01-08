@@ -59,26 +59,24 @@ const StyledHeader = styled.header`
   }
 `;
 
-const Header = () => {
-  return (
-    <StyledHeader>
-      <div className="brand">
-        <img src={logo} alt="congkir logo" />
-        <h1 className="title">CONGKIR</h1>
-      </div>
-      <div className="social-media">
-        <a href="https://twitter.com/fcrezza" className="social-media-link">
-          <img src={twitter} alt="twitter" />
-        </a>
-        <a
-          href="https://github.com/fcrezza/congkir"
-          className="social-media-link"
-        >
-          <img src={github} alt="project repository" />
-        </a>
-      </div>
-    </StyledHeader>
-  );
-};
+const Header = () => (
+  <StyledHeader>
+    <div className="brand">
+      <img src={logo} alt="congkir logo" />
+      <h1 className="title">CONGKIR</h1>
+    </div>
+    <div className="social-media">
+      <a href="https://twitter.com/fcrezza" className="social-media-link">
+        <img src={twitter} alt="twitter" />
+      </a>
+      <a
+        href="https://github.com/fcrezza/congkir"
+        className="social-media-link"
+      >
+        <img src={github} alt="project repository" />
+      </a>
+    </div>
+  </StyledHeader>
+);
 
 export default memo(Header);
